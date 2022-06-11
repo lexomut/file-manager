@@ -15,9 +15,11 @@ process.stdin.on('data', async (data) => {
     if (fm[command]) {
         try {
             await fm[command](arg,arg2);
+            console.log(`You are currently in ${fm.path}`);
         }
         catch (e)
         {
+            console.log('Operation failed');
             console.log(e.message);
         }
 
