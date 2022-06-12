@@ -3,8 +3,7 @@ import { normalizePath } from './normalize-path.js';
 import { createHash } from 'crypto';
 
 
-
-export const calculateHash = async (filePath,currentPath) => {
+export const calculateHash = async (filePath, currentPath) => {
     try {
         filePath = normalizePath(filePath, currentPath);
         const hash = createHash('sha256');
