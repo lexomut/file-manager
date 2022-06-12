@@ -27,7 +27,7 @@ class FM {
         });
         console.log(`Welcome to the File Manager, ${this.args.user || ''}!`);
         process.on('SIGINT', () => this['.exit']());
-        process.stdin.on('data', async (data) => this.onInput());
+        process.stdin.on('data', async (data) => this.onInput(data));
     }
 
     '.exit'() {
