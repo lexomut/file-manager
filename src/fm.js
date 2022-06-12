@@ -8,6 +8,7 @@ import { cat } from './utils/cat.js';
 import { copy } from './utils/copy.js';
 import { remove } from './utils/remove.js';
 import { calculateHash } from './utils/hash.js';
+import { compress, decompress} from './utils/compress.js';
 
 const homedir = os.homedir();
 
@@ -17,6 +18,7 @@ class FM {
         this.path = homedir;
         this.rootDir = path.parse(process.cwd()).root;
     }
+
 
     up() {
         console.log(this.path);
@@ -71,6 +73,14 @@ class FM {
 
     hash(path_to_file) {
         return calculateHash(path_to_file, this.path);
+    }
+
+    compress ( path_to_file, path_to_destination) {
+        return compress(path_to_file, path_to_destination, this.path);
+    }
+
+    decompress ( path_to_file, path_to_destination) {
+        return decompress(path_to_file, path_to_destination, this.path);
     }
 
 
