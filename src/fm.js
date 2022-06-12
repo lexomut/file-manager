@@ -6,8 +6,8 @@ import { create } from './utils/create.js';
 import { rename } from './utils/rename.js';
 import { cat } from './utils/cat.js';
 import { copy } from './utils/copy.js';
-import {remove} from './utils/remove.js';
-
+import { remove } from './utils/remove.js';
+import { calculateHash } from './utils/hash.js';
 
 const homedir = os.homedir();
 
@@ -49,12 +49,30 @@ class FM {
     }
 
     mv(path_to_file, path_to_new_directory) {
-        return copy(path_to_file, path_to_new_directory,this.path).then(() => this.rm(path_to_file));
+        return copy(path_to_file, path_to_new_directory, this.path).then(() => this.rm(path_to_file));
     }
 
     rm(path_to_file) {
         return remove(path_to_file, this.path);
     }
+
+    os(arg) {
+        os.architecture = os.arch;
+        os.username = os.userInfo().username;
+        const key = (arg.startsWith('--') && arg.slice(2)) || arg;
+        if (os[key]) {
+            if (typeof os[key] === 'function') console.log(os[key]());
+            else console.log(JSON.stringify(os[key]));
+        } else {
+            throw new Error(`OS module has no ${arg} method`);
+        }
+        return Promise.resolve();
+    }
+
+    hash(path_to_file) {
+        return calculateHash(path_to_file, this.path);
+    }
+
 
 }
 
