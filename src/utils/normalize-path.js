@@ -1,6 +1,6 @@
 import path from 'path';
 
-export function normalizePath(pathToFile,currentPath) {
+export function normalizePath(pathToFile, currentPath) {
     if (path.isAbsolute(pathToFile)) {
         pathToFile = path.normalize(pathToFile);
     } else {

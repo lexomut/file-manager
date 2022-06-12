@@ -6,7 +6,7 @@ import { normalizePath } from './normalize-path.js';
 export async function copy(pathToFile, pathToNewDirectory, currentPath) {
     try {
         pathToFile = normalizePath(pathToFile, currentPath);
-        const fileName = path.parse(pathToFile).name + (path.parse(pathToFile).ext||'');
+        const fileName = path.parse(pathToFile).name + (path.parse(pathToFile).ext || '');
         pathToNewDirectory = normalizePath(pathToNewDirectory + '/' + fileName, currentPath);
         const file = await open(pathToFile);
         const input = file.createReadStream();

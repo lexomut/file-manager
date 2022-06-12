@@ -8,7 +8,7 @@ export async function compress(pathToFile, newPath, currentPath) {
     try {
         pathToFile = normalizePath(pathToFile, currentPath);
         const fileName = path.parse(pathToFile).name;
-        newPath = normalizePath(newPath||'./' + fileName+(path.parse(pathToFile).ext||'')+'.br', currentPath);
+        newPath = normalizePath(newPath || './' + fileName + (path.parse(pathToFile).ext || '') + '.br', currentPath);
         const file = await open(pathToFile);
         const input = file.createReadStream();
         const gzip = zlib.createBrotliCompress();
@@ -30,11 +30,11 @@ export async function decompress(pathToFile, newPath, currentPath) {
     try {
         pathToFile = normalizePath(pathToFile, currentPath);
         const fileName = path.parse(pathToFile).name;
-        newPath = normalizePath(newPath ||'./' + fileName, currentPath);
-        const file =  open(pathToFile);
-        const input =  file.createReadStream();
-        const gzip =  zlib.createBrotliDecompress();
-        const output =  fs.createWriteStream(newPath);
+        newPath = normalizePath(newPath || './' + fileName, currentPath);
+        const file = open(pathToFile);
+        const input = file.createReadStream();
+        const gzip = zlib.createBrotliDecompress();
+        const output = fs.createWriteStream(newPath);
         return await new Promise((resolve, reject) => {
             input.on('error', reject);
             output.on('error', reject);

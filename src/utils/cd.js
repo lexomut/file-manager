@@ -1,10 +1,10 @@
 import fs from 'fs';
 import { normalizePath } from './normalize-path.js';
 
-export function cd(arg,currentPath) {
+export function cd(arg, currentPath) {
     return new Promise((resolve, reject) => {
         try {
-            const dirPath=normalizePath(arg,currentPath);
+            const dirPath = normalizePath(arg, currentPath);
             fs.access(dirPath, (e) => {
                 if (e) {
                     reject(e);
