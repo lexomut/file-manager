@@ -8,22 +8,53 @@ import { cat } from './utils/cat.js';
 import { copy } from './utils/copy.js';
 import { remove } from './utils/remove.js';
 import { calculateHash } from './utils/hash.js';
-import { compress, decompress} from './utils/compress.js';
-
-const homedir = os.homedir();
+import { compress, decompress } from './utils/compress.js';
 
 
 class FM {
     constructor() {
-        this.path = homedir;
+        this.path = os.homedir();
         this.rootDir = path.parse(process.cwd()).root;
+        this.args = {};
+    }
+
+    init() {
+        process.argv.slice(2).forEach(item => {
+            if (item.startsWith('--')) {
+                const [key, value] = item.slice(2).split('=');
+                this.args[key] = value;
+            }
+        });
+        console.log(`Welcome to the File Manager, ${this.args.user || ''}!`);
+        process.on('SIGINT', () => this['.exit']());
+        process.stdin.on('data', async (data) => this.onInput());
+    }
+
+    '.exit'() {
+        console.log(`Thank you for using File Manager, ${this.args.user || ''}!`);
+        process.exit();
+    }
+
+
+    async onInput(data) {
+        const message = data.toString().slice(0, -2);
+        const [command, arg, arg2] = message.split(' ');
+        if (this[command]) {
+            try {
+                await this[command](arg?.toString(), arg2?.toString());
+                console.log(`You are currently in ${this.path}`);
+            } catch (e) {
+                console.log('Operation failed');
+            }
+
+        } else {
+            console.log('Invalid input');
+        }
     }
 
 
     up() {
-        console.log(this.path);
         this.path = path.join(this.path, '../');
-        console.log(this.path);
     }
 
     ls() {
@@ -75,11 +106,11 @@ class FM {
         return calculateHash(path_to_file, this.path);
     }
 
-    compress ( path_to_file, path_to_destination) {
+    compress(path_to_file, path_to_destination) {
         return compress(path_to_file, path_to_destination, this.path);
     }
 
-    decompress ( path_to_file, path_to_destination) {
+    decompress(path_to_file, path_to_destination) {
         return decompress(path_to_file, path_to_destination, this.path);
     }
 
